@@ -920,7 +920,7 @@ window.addEventListener('DOMContentLoaded', function () {
   <iframe id="nexorCursosFrame" title="Cursos NEXOR AI Academy" style="width:100%;height:100%;border:0;background:#09090d"></iframe>
 </div>
 <script>
-async function checkoutNotice(){if(cart.length!==1||cart[0].id==='bundle'||cart[0].qty!==1){alert('Para este teste, escolha apenas um curso individual.');return;}try{const response=await fetch('https://nexor-backend-y8rv.onrender.com/api/cobranca',{method:'POST'});const data=await response.json();if(!response.ok){alert('Erro ao criar pagamento: '+JSON.stringify(data));return;}alert('Resposta do pagamento de teste: '+JSON.stringify(data));}catch(error){alert('Não foi possível conectar ao servidor. Tente novamente.');}}
+async function checkoutNotice(productId, quantity){if(quantity!==1){alert('Por enquanto, o checkout aceita uma unidade por compra.');return;}try{const response=await fetch('https://nexor-backend-y8rv.onrender.com/api/cobranca',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({productId})});const data=await response.json();if(!response.ok){alert('Erro ao criar pagamento: '+(data.error||'Tente novamente.'));return;}alert('Cobrança de teste criada. ID: '+data.transactionId+'\nPix: '+data.pix);}catch(error){alert('Não foi possível conectar ao servidor. Tente novamente.');}}
 function abrirCursosNexor(){
   const overlay=document.getElementById('nexorCursosOverlay');
   const frame=document.getElementById('nexorCursosFrame');
@@ -928,7 +928,7 @@ function abrirCursosNexor(){
   overlay.style.display='block';document.body.style.overflow='hidden';
 }
 function fecharCursosNexor(){document.getElementById('nexorCursosOverlay').style.display='none';document.body.style.overflow='';}
-window.addEventListener('message',e=>{if(e.data==='nexor-voltar-inicio')fecharCursosNexor();});
+window.addEventListener('message',e=>{if(e.origin!==location.origin)return;if(e.data==='nexor-voltar-inicio'){fecharCursosNexor();return;}if(e.data?.type==='nexor-checkout'){checkoutNotice(e.data.productId,e.data.quantity);}});
 </script>
 
 </body>
