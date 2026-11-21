@@ -924,7 +924,7 @@ async function checkoutNotice(){if(cart.length!==1||cart[0].id==='bundle'||cart[
 function abrirCursosNexor(){
   const overlay=document.getElementById('nexorCursosOverlay');
   const frame=document.getElementById('nexorCursosFrame');
-  if(!frame.dataset.loaded){frame.srcdoc=nexorCursosHTML;frame.dataset.loaded='1';}
+  if(!frame.dataset.loaded){frame.src='cursos.html';frame.dataset.loaded='1';}
   overlay.style.display='block';document.body.style.overflow='hidden';
 }
 function fecharCursosNexor(){document.getElementById('nexorCursosOverlay').style.display='none';document.body.style.overflow='';}
