@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#09090d">
 <title>Cursos | NEXOR AI Academy</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#09090d;color:#f7f7fb;font:16px/1.5 Arial,sans-serif}main{max-width:1000px;margin:auto;padding:90px 20px 50px}.eyebrow{color:#ff7189;font-size:12px;letter-spacing:2px;font-weight:bold}h1{font-size:clamp(32px,6vw,54px);line-height:1.1;margin:12px 0}p{color:#b8b8c6}.intro{text-align:center;max-width:700px;margin:0 auto 35px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}.card{background:#15151e;border:1px solid #30303b;border-radius:14px;padding:24px}.card h2{font-size:21px;margin:0 0 10px}.card p{font-size:14px;min-height:64px}.tag{color:#ff7189;font-size:12px;font-weight:bold}.back{position:fixed;top:16px;left:16px;border:0;border-radius:8px;padding:11px 15px;background:#ff3155;color:white;font-weight:bold;cursor:pointer}.note{text-align:center;font-size:13px;margin-top:28px}
+*{box-sizing:border-box}body{margin:0;background:#09090d;color:#f7f7fb;font:16px/1.5 Arial,sans-serif}main{max-width:1000px;margin:auto;padding:90px 20px 50px}.eyebrow{color:#ff7189;font-size:12px;letter-spacing:2px;font-weight:bold}h1{font-size:clamp(32px,6vw,54px);line-height:1.1;margin:12px 0}p{color:#b8b8c6}.intro{text-align:center;max-width:700px;margin:0 auto 35px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}.card{background:#15151e;border:1px solid #30303b;border-radius:14px;padding:24px}.card h2{font-size:21px;margin:0 0 10px}.card p{font-size:14px}.tag{color:#ff7189;font-size:12px;font-weight:bold}.back{position:fixed;top:16px;left:16px;border:0;border-radius:8px;padding:11px 15px;background:#ff3155;color:white;font-weight:bold;cursor:pointer}.buy{border:0;border-radius:8px;background:#ff3155;color:#fff;font-weight:bold;padding:12px 16px;cursor:pointer;width:100%;margin-top:12px}.price{font-size:24px;font-weight:bold;margin:12px 0}.cart{margin:26px auto 0;background:#15151e;border:1px solid #ff315555;border-radius:14px;padding:22px;max-width:620px}.cart h2{margin:0 0 12px}.cartline{display:flex;justify-content:space-between;gap:12px;align-items:center}.remove{border:1px solid #555;background:transparent;color:#fff;border-radius:6px;padding:7px 10px;cursor:pointer}.total{font-weight:bold;font-size:20px;border-top:1px solid #333;padding-top:12px}.note{text-align:center;font-size:13px;margin-top:18px}
 </style>
 </head>
 <body>
@@ -15,14 +15,42 @@
 <section class="intro">
 <div class="eyebrow">NEXOR AI ACADEMY</div>
 <h1>Escolha seu <span style="color:#ff3155">próximo passo.</span></h1>
-<p>Conheça os conteúdos do treinamento e veja qual etapa combina com seu projeto.</p>
+<p>Esta é uma página de teste do produto e do carrinho.</p>
 </section>
 <section class="cards">
-<article class="card"><div class="tag">MÓDULO 01</div><h2>Criação com IA</h2><p>Fundamentos para criar personagens virtuais, identidade visual e conteúdo digital.</p></article>
-<article class="card"><div class="tag">MÓDULO 02</div><h2>Estruturação</h2><p>Organização de perfis, ferramentas e desenvolvimento de projetos digitais.</p></article>
-<article class="card"><div class="tag">MÓDULO 03</div><h2>Monetização</h2><p>Conheça plataformas, divulgação, atendimento e processos de venda.</p></article>
+<article class="card">
+<div class="tag">PRODUTO DE TESTE</div>
+<h2>Produto de teste NEXOR</h2>
+<p>Item temporário para testar a adição ao carrinho e o fluxo de compra.</p>
+<div class="price">R$ 49,99</div>
+<button class="buy" onclick="adicionarAoCarrinho()">Adicionar ao carrinho</button>
+</article>
 </section>
-<p class="note">A área de compra será disponibilizada aqui quando o checkout estiver conectado.</p>
+<section class="cart" aria-live="polite">
+<h2>Seu carrinho <span id="quantidade">(0)</span></h2>
+<div id="itens"><p>Seu carrinho está vazio.</p></div>
+<div class="total" id="total">Total: R$ 0,00</div>
+<button class="buy" id="checkout" onclick="continuarTeste()" disabled>Continuar para o teste de checkout</button>
+<p class="note">O checkout ainda não está conectado. Este botão não realiza cobrança.</p>
+</section>
 </main>
+<script>
+let quantidade = 0;
+const preco = 49.99;
+const formatar = valor => valor.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+function atualizarCarrinho(){
+  document.getElementById('quantidade').textContent = '('+quantidade+')';
+  document.getElementById('itens').innerHTML = quantidade
+    ? '<div class="cartline"><span>Produto de teste NEXOR × '+quantidade+'</span><button class="remove" onclick="removerDoCarrinho()">Remover</button></div><p>'+formatar(preco)+' cada</p>'
+    : '<p>Seu carrinho está vazio.</p>';
+  document.getElementById('total').textContent = 'Total: '+formatar(preco*quantidade);
+  document.getElementById('checkout').disabled = quantidade === 0;
+  document.getElementById('checkout').style.opacity = quantidade === 0 ? '.5' : '1';
+}
+function adicionarAoCarrinho(){quantidade++;atualizarCarrinho();}
+function removerDoCarrinho(){quantidade=0;atualizarCarrinho();}
+function continuarTeste(){if(quantidade>0)alert('Carrinho funcionando. O checkout ainda não está conectado; nenhuma cobrança foi realizada.');}
+atualizarCarrinho();
+</script>
 </body>
 </html>
