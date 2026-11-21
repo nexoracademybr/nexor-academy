@@ -920,7 +920,31 @@ window.addEventListener('DOMContentLoaded', function () {
   <iframe id="nexorCursosFrame" title="Cursos NEXOR AI Academy" style="width:100%;height:100%;border:0;background:#09090d"></iframe>
 </div>
 <script>
-async function checkoutNotice(productId, quantity){if(quantity!==1){alert('Por enquanto, o checkout aceita uma unidade por compra.');return;}try{const response=await fetch('https://nexor-backend-y8rv.onrender.com/api/cobranca',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({productId})});const data=await response.json();if(!response.ok){alert('Erro ao criar pagamento: '+(data.error||'Tente novamente.'));return;}alert('Cobrança de teste criada. ID: '+data.transactionId+'\nPix: '+data.pix);}catch(error){alert('Não foi possível conectar ao servidor. Tente novamente.');}}
+async function checkoutNotice(productId, quantity){
+  if(quantity!==1){alert('Por enquanto, o checkout aceita uma unidade por compra.');return;}
+  try{
+    const response=await fetch('https://nexor-backend-y8rv.onrender.com/api/cobranca',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({productId})});
+    const data=await response.json();
+    if(!response.ok){alert('Erro ao criar pagamento: '+(data.error||'Tente novamente.'));return;}
+    alert('Cobrança de teste criada. Copie o ID e o PIX para usar na simulação sandbox.\nID: '+data.transactionId+'\nPIX: '+data.pix);
+    acompanharPagamento(data.transactionId);
+  }catch(error){alert('Não foi possível conectar ao servidor. Tente novamente.');}
+}
+async function acompanharPagamento(transactionId){
+  const statusUrl='https://nexor-backend-y8rv.onrender.com/api/status/'+encodeURIComponent(transactionId);
+  const fim=Date.now()+5*60*1000;
+  while(Date.now()<fim){
+    await new Promise(resolve=>setTimeout(resolve,4000));
+    try{
+      const response=await fetch(statusUrl);
+      if(response.ok){
+        const data=await response.json();
+        if(data.status==='paid'){alert('Pagamento aprovado! Seu pagamento foi confirmado.');return;}
+      }
+    }catch(error){}
+  }
+  alert('Ainda não recebemos a confirmação. Se você já simulou o pagamento no sandbox, atualize a página e tente novamente.');
+}
 function abrirCursosNexor(){
   const overlay=document.getElementById('nexorCursosOverlay');
   const frame=document.getElementById('nexorCursosFrame');
