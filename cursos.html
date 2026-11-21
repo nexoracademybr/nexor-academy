@@ -31,7 +31,7 @@
 <div id="itens"><p>Seu carrinho está vazio.</p></div>
 <div class="total" id="total">Total: R$ 0,00</div>
 <button class="buy" id="checkout" onclick="continuarTeste()" disabled>Continuar para o teste de checkout</button>
-<p class="note">O checkout ainda não está conectado. Este botão não realiza cobrança.</p>
+<p class="note">Checkout de teste: a cobrança é criada no ambiente sandbox da NxGate.</p>
 </section>
 </main>
 <script>
@@ -49,7 +49,7 @@ function atualizarCarrinho(){
 }
 function adicionarAoCarrinho(){quantidade++;atualizarCarrinho();}
 function removerDoCarrinho(){quantidade=0;atualizarCarrinho();}
-function continuarTeste(){if(quantidade>0)alert('Carrinho funcionando. O checkout ainda não está conectado; nenhuma cobrança foi realizada.');}
+function continuarTeste(){if(quantidade>0){if(quantidade!==1){alert('Por enquanto, o checkout aceita uma unidade por compra.');return;}parent.postMessage({type:'nexor-checkout',productId:'produto-teste-nexor',quantity:quantidade},location.origin);}}
 atualizarCarrinho();
 </script>
 </body>
